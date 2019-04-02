@@ -1,4 +1,5 @@
 const productList = document.querySelector('#product-list');
+const form = document.querySelector('#add-product-form');
 
 // create element & render product
 function renderProduct(doc){
@@ -22,4 +23,15 @@ db.collection('products').get().then(snapshot => {
         console.log(doc.data())
         renderProduct(doc);
     });
+});
+
+// saving data
+form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    db.collection('products').add({
+        name: form.name.value,
+        price: form.price.value
+    });
+    form.name.value = '';
+    form.price.value = '';
 });
