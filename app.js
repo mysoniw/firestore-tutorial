@@ -1,53 +1,4 @@
-const productList = document.querySelector('#product-list');
-const productForm = document.querySelector('#add-product-form');
-
 const cityList = document.querySelector('#city-list');
-
-// create element & render product
-function renderProduct(doc) {
-    let li = document.createElement('li');
-    let name = document.createElement('span');
-    let price = document.createElement('span');
-    let cross = document.createElement('div');
-
-
-    li.setAttribute('data-id', doc.id);
-    name.textContent = doc.data().name;
-    price.textContent = doc.data().price;
-    cross.textContent = 'x';
-
-    li.appendChild(name);
-    li.appendChild(price);
-    li.appendChild(cross);
-
-    productList.appendChild(li);
-
-    // deleting data
-    cross.addEventListener('click', (e) => {
-        e.stopPropagation();
-        let id = e.target.parentElement.getAttribute('data-id');
-        db.collection('products').doc(id).delete();
-    });
-}
-
-// getting data = promise
-db.collection('products').where('price', '=', 100).get().then(snapshot => {
-    snapshot.docs.forEach(doc => {
-        console.log(doc.data())
-        renderProduct(doc);
-    });
-});
-
-// saving data
-productForm.addEventListener('submit', (e) => {
-    e.preventDefault();
-    db.collection('products').add({
-        name: productForm.name.value,
-        price: productForm.price.value
-    });
-    productForm.name.value = '';
-    productForm.price.value = '';
-});
 
 // new collection
 var citiesRef = db.collection("cities");
@@ -104,7 +55,7 @@ function renderCity(doc) {
 }
 
 // getting data = promise
-db.collection('cities').get().then(snapshot => {
+db.collection('cities').where("state", "==", "CA").where("population", ">", 1000000).get().then(snapshot => {
     console.log(snapshot.docs)
     snapshot.docs.forEach(doc => {
         renderCity(doc);
