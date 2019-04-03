@@ -55,8 +55,8 @@ function renderCity(doc) {
 }
 
 // getting data = promise
-db.collection('cities').where("state", "==", "CA").where("population", ">", 1000000).get().then(snapshot => {
-    console.log(snapshot.docs)
+db.collection('cities').where("state", "==", "CA").orderBy('population').get().then(snapshot => {
+    // console.log(snapshot.docs)
     snapshot.docs.forEach(doc => {
         renderCity(doc);
     });
